@@ -1,24 +1,19 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import logo from "./logo.svg";
+import NavBar from "./Components/NavBar";
+import UsernameInput from "./Components/UsernameInput";
 
 function App() {
+  const [username, setUsername] = useState("default");
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <NavBar username={username}/>
       </header>
+      <section>
+        <UsernameInput setUsername={setUsername}/>
+      </section>
     </div>
   );
 }
