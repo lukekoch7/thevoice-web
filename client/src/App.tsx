@@ -1,19 +1,47 @@
 import React, { useEffect, useState } from "react";
 import { Button, ButtonGroup, Form } from "react-bootstrap";
-import { Bet, Coach } from "./Components/Bet";
 import MyRow from "./Components/MyRow";
 // import logo from "./logo.svg";
 import NavBar from "./Components/NavBar";
+import ResultsModal from "./Components/ResultsModal";
+import { Bet, Coach } from "./shared/Bet";
+import { Results } from "./shared/Results";
 
 function App() {
-  const [username, setUsername] = useState(localStorage.getItem("username") ?? "default");
-  const backendURL = "localhost:3001"
+  const [username, setUsername] = useState(
+    localStorage.getItem("username") ?? "default"
+  );
+  const backendURL = "http://localhost:3001";
   const defaultBet: Bet = {
     player: username,
     getsSeat: false,
   };
 
   const [bet, setBet] = useState<Bet>(defaultBet);
+  const [latestResults, setLatestResults] = useState<Results>();
+  const [showResultModal, setShowResultModal] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (username !== "admin42") {
+      const id = setInterval(() => {
+        fetch(backendURL + "/results")
+          .then((res) => res.json() as unknown as Results)
+          .then((results) => {
+            if(!latestResults){
+              setLatestResults(results)
+            } else if (latestResults.timestamp !== results.timestamp) {
+              setLatestResults(results);
+              setShowResultModal(true);
+              console.log("SHOULD SHOW MODAL NOW");
+            }
+          });
+      }, 1000);
+      return () => clearInterval(id);
+    }
+  });
+
+  useEffect(() => {}, [latestResults]);
+
   useEffect(() => {
     console.log(bet);
   }, [bet]);
@@ -75,12 +103,18 @@ function App() {
   }
 
   function placeBet() {
-    fetch(backendURL, {
+    console.log("placing bet: " + JSON.stringify(bet));
+    fetch(backendURL + "/placeBet", {
       method: "POST",
+      headers: { "Content-Type": "application/json" },
       mode: "cors",
       body: JSON.stringify(bet),
     })
-
+      .then((res) => res.text())
+      .then((text) => {
+        console.log("Response from server: " + text);
+      });
+    setBet(defaultBet);
   }
 
   return (
@@ -110,9 +144,7 @@ function App() {
           <MyRow className="" height="50px">
             {/* NUMBER OF BUZZERS */}
             <div className="col-1 text-center">
-
-                <h4>{bet.numberOfBuzz ?? "-"}</h4>
-         
+              <h4>{bet.numberOfBuzz ?? "-"}</h4>
             </div>
             <Form.Range
               disabled={!bet.getsSeat}
@@ -177,7 +209,7 @@ function App() {
               type="checkbox"
               id="comebackCheckbox"
               label="Comeback?"
-              className="col-5 mx-1"
+              className="col-5"
               onClick={() => setComeback(!bet.comeback)}
               disabled={bet.getsSeat}
             />
@@ -185,14 +217,23 @@ function App() {
             <Form.Check
               type="checkbox"
               label="Cry?"
-              className="col-5 mx-1"
+              className="col-5"
               onClick={() => setCry(!bet.cry)}
             />
           </MyRow>
           <MyRow>
-            <Button variant="primary">Place bet</Button>
+            <Button variant="primary" onClick={() => placeBet()}>
+              Place bet
+            </Button>
           </MyRow>
         </Form>
+        {showResultModal && latestResults && (
+          <ResultsModal
+            results={latestResults}
+            username={username}
+            setShow={setShowResultModal}
+          />
+        )}
       </section>
     </div>
   );
