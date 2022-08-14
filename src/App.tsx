@@ -22,13 +22,25 @@ function App() {
   const [showResultModal, setShowResultModal] = useState<boolean>(false);
 
   useEffect(() => {
+    if (username === "default") {
+      fetch(backendURL + "/randUsername", {
+        mode: "cors",
+      })
+        .then((res) => res.text())
+        .then((randUsername) => setUsername(randUsername));
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
     if (username !== "admin42") {
       const id = setInterval(() => {
-        fetch(backendURL + "/results")
+        fetch(backendURL + "/results", {
+          mode: "cors",
+        })
           .then((res) => res.json() as unknown as Results)
           .then((results) => {
-            if(!latestResults){
-              setLatestResults(results)
+            if (!latestResults) {
+              setLatestResults(results);
             } else if (latestResults.timestamp !== results.timestamp) {
               setLatestResults(results);
               setShowResultModal(true);
