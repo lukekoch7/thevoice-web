@@ -1,7 +1,7 @@
 import express from "express";
-import { Bet } from "./shared/Bet";
-import { Results } from "./shared/Results";
-import { calcResult } from "./gameLogic";
+import { Bet } from "./src/shared/Bet";
+import { Results } from "./src/shared/Results";
+import { calcResult } from "./src/gameLogic";
 import cors from "cors";
 import bodyParser from "body-parser";
 
