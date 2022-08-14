@@ -26,7 +26,7 @@ export default function NavBar(props: {
   return (
     <Navbar bg="dark" variant="dark">
       <Container className="bg-dark text-white">
-        <Navbar.Brand href="#home">TheVoice Web</Navbar.Brand>
+        <Navbar.Brand href="#">TheVoice Web</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
