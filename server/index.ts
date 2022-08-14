@@ -14,7 +14,7 @@ const options: cors.CorsOptions = {
 };
 app.use(cors(options));
 app.use(bodyParser.json())
-const port: number = 3001;
+const port: number = parseInt(process.env.PORT ?? "3001");
 
 let currentBets: Bet[] = [];
 let currentResults: Results = {
