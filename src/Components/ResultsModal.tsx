@@ -1,15 +1,15 @@
 import { Dispatch, SetStateAction } from "react";
 import { Button, Modal, Table } from "react-bootstrap";
-import { Results } from "../shared/Results";
+import { Update } from "../shared/Update";
 
 export default function ResultsModal(props: {
-  results: Results;
+  update: Update;
   username: string;
   setShow: Dispatch<SetStateAction<boolean>>;
 }): JSX.Element {
   const handleClose = () => props.setShow(false);
 
-  const ownResult = props.results.results.find(
+  const ownResult = props.update.results.find(
     (res) => res.player === props.username
   );
   return (
@@ -19,14 +19,14 @@ export default function ResultsModal(props: {
       </Modal.Header>
       <Modal.Body>
         <>
-          {props.results.results.length === 0 && <h2>No results</h2>}
+          {props.update.results.length === 0 && <h2>No results</h2>}
           {ownResult && (
             <h4>
               Your result: Drink {ownResult.drink} and distribute{" "}
               {ownResult.distribute}!
             </h4>
           )}
-          {props.results.results.length !== 0 && (
+          {props.update.results.length !== 0 && (
             <>
               <h6>Other results: </h6>
               <Table striped bordered>
@@ -38,9 +38,9 @@ export default function ResultsModal(props: {
                   </tr>
                 </thead>
                 <tbody>
-                  {props.results.results.map((result, index) => {
+                  {props.update.results.map((result, index) => {
                     return (
-                      <tr key={props.results.timestamp + index}>
+                      <tr key={props.update.timestamp + index}>
                         <td>{result.player}</td>
                         <td>{result.drink}</td>
                         <td>{result.distribute}</td>
