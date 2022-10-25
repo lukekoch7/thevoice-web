@@ -95,6 +95,7 @@ function App() {
       });
     setBet(defaultBet);
     setShowSuccessModal(true);
+    setTempUpdateFix(String(Date.now()))
     setTimeout(() => {
       setShowSuccessModal(false);
     }, 1000);
@@ -103,7 +104,7 @@ function App() {
   function toggleBlocked() {
     fetch(backendURL + "/toggleBlocked");
   }
-
+  const [tempUpdateFix, setTempUpdateFix] = React.useState<string>(String(Date.now()))
   return (
     <div className="App">
       <header className="App-header">
@@ -133,6 +134,7 @@ function App() {
               bet={bet}
               setBet={setBet}
               defaultBet={defaultBet}
+              key={tempUpdateFix}
             />
           </MyRow>
           <MyRow>
