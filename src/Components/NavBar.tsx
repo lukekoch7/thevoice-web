@@ -1,3 +1,4 @@
+import { ThemeConfig } from "bootstrap-darkmode";
 import { ReactElement } from "react";
 import {
   Button,
@@ -22,7 +23,11 @@ export default function NavBar(props: {
       </Popover.Body>
     </Popover>
   );
-
+  const themeConfig = new ThemeConfig();
+  themeConfig.initTheme();
+  function switchTheme() {
+    themeConfig.setTheme(themeConfig.getTheme() === "dark" ? "light" : "dark");
+  }
   return (
     <Navbar bg="dark" variant="dark">
       <Container className="bg-dark text-white">
@@ -47,6 +52,9 @@ export default function NavBar(props: {
               </Button>
             </OverlayTrigger>
           </Nav.Link>
+          <Nav.Item>
+            <Button onClick={switchTheme} variant={"secondary"}> Toggle dark mode </Button>
+          </Nav.Item>
         </Navbar.Collapse>
       </Container>
     </Navbar>

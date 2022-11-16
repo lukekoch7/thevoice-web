@@ -19,11 +19,11 @@ export default function CurrentBetsDisplay(props: { update: Update }) {
         <tbody>
           {props.update.bets.map((bet, index) => {
             return (
-              <tr key={props.update.timestamp + index}>
+              <tr key={props.update.timestamp + bet.player+ index}>
                 <td>{bet.player}</td>
                 <td>{bet.getsSeat ? "Yes" : "No"}</td>
                 <td>{bet.numberOfBuzz ? bet.numberOfBuzz : ""}</td>
-                <td>{bet.coach ? Coach[bet.coach] : ""}</td>
+                <td>{bet.coach !== undefined ? Coach[bet.coach] : ""}</td>
                 <td>
                   {bet.cry === undefined ? "" : bet.cry === true ? "Yes" : "No"}
                 </td>
