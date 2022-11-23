@@ -17,7 +17,7 @@ function App() {
   const [username, setUsername] = useState(
     localStorage.getItem("username") ?? "default"
   );
-  const backendURL = "https://voice-web-backend.herokuapp.com";
+  const backendURL = "https://thevoice-web-backend.vercel.app";
   // const backendURL = "http://localhost:3001";
 
   const defaultBet: Bet = {
